@@ -1,0 +1,137 @@
+[
+  {
+    "id": "1",
+    "nombre": "Vlad Drácula",
+    "pelicula_serie": "Drácula (Universal Classic Monsters)",
+    "tipo": "Vampiro",
+    "poderes": ["Inmortalidad", "Transformación en murciélago", "Hipnosis"],
+    "clasificacion": "Antagonista",
+    "imagen": "/images/dracula.jpg"
+  },
+  {
+    "id": "2",
+    "nombre": "Harry Potter",
+    "pelicula_serie": "Harry Potter",
+    "tipo": "Mago",
+    "poderes": ["Magia con varita", "Volar en escoba", "Hablar pársel"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/harrypotter.jpg"
+  },
+  {
+    "id": "3",
+    "nombre": "Hermione Granger",
+    "pelicula_serie": "Harry Potter",
+    "tipo": "Bruja",
+    "poderes": ["Gran inteligencia", "Magia poderosa", "Encantos avanzados"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/hermione.webp"
+  },
+  {
+    "id": "4",
+    "nombre": "Lestat de Lioncourt",
+    "pelicula_serie": "Entrevista con el Vampiro",
+    "tipo": "Vampiro",
+    "poderes": ["Fuerza sobrehumana", "Velocidad", "Regeneración"],
+    "clasificacion": "Antihéroe",
+    "imagen": "/images/lestat.jpg"
+  },
+  {
+    "id": "5",
+    "nombre": "Remus Lupin",
+    "pelicula_serie": "Harry Potter",
+    "tipo": "Hombre Lobo",
+    "poderes": ["Magia (como mago)", "Transformación en lobo"],
+    "clasificacion": "Aliado",
+    "imagen": "/images/lupin.jpg"
+  },
+  {
+    "id": "6",
+    "nombre": "Gandalf",
+    "pelicula_serie": "El Señor de los Anillos",
+    "tipo": "Mago (Istari)",
+    "poderes": ["Control del fuego", "Iluminación", "Sabiduría ancestral"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/gandalf.webp"
+  },
+  {
+    "id": "7",
+    "nombre": "Drácula (Animado)",
+    "pelicula_serie": "Hotel Transilvania",
+    "tipo": "Vampiro",
+    "poderes": ["Vuelo", "Telequinesis", "Transformación"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/dracula2.png"
+  },
+  {
+    "id": "8",
+    "nombre": "Winifred Sanderson",
+    "pelicula_serie": "Hocus Pocus",
+    "tipo": "Bruja",
+    "poderes": ["Magia de ojos", "Vuelo", "Absorción de vida"],
+    "clasificacion": "Antagonista",
+    "imagen": "/images/winifred.webp"
+  },
+  {
+    "id": "9",
+    "nombre": "Sarah Sanderson",
+    "pelicula_serie": "Hocus Pocus",
+    "tipo": "Bruja",
+    "poderes": ["Seducción mágica", "Vuelo"],
+    "clasificacion": "Antagonista",
+    "imagen": "/images/sarah.webp"
+  },
+  {
+    "id": "10",
+    "nombre": "Mary Sanderson",
+    "pelicula_serie": "Hocus Pocus",
+    "tipo": "Bruja",
+    "poderes": ["Rastreo por olor", "Vuelo"],
+    "clasificacion": "Antagonista",
+    "imagen": "/images/mary.jpg"
+  },
+  {
+    "id": "11",
+    "nombre": "Edward Cullen",
+    "pelicula_serie": "Crepúsculo",
+    "tipo": "Vampiro",
+    "poderes": ["Telepatía", "Velocidad sobrehumana", "Piel de diamante"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/edward.webp"
+  },
+  {
+    "id": "12",
+    "nombre": "Jacob Black",
+    "pelicula_serie": "Crepúsculo",
+    "tipo": "Hombre Lobo",
+    "poderes": ["Transformación a voluntad", "Fuerza y sanación acelerada"],
+    "clasificacion": "Aliado",
+    "imagen": "/images/jacob.webp"
+  },
+  {
+    "id": "13",
+    "nombre": "Elena Gilbert",
+    "pelicula_serie": "Diarios de Vampiros",
+    "tipo": "Humana/Vampiro",
+    "poderes": ["Emociones desconectadas (como vampiro)"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/elena.jpg"
+  },
+    {
+    "id": "14",
+    "nombre": "Stefan Salvatore",
+    "pelicula_serie": "Diarios de Vampiros",
+    "tipo": "Vampiro",
+    "poderes": ["Compulsión mental", "Súper fuerza", "Niebla"],
+    "clasificacion": "Protagonista",
+    "imagen": "/images/stefan.webp"
+  },
+  {
+    "id": "15",
+    "nombre": "Damon Salvatore",
+    "pelicula_serie": "Diarios de Vampiros",
+    "tipo": "Vampiro",
+    "poderes": ["Compulsión mental", "Súper fuerza", "Niebla"],
+    "clasificacion": "Protagonista/Antihéroe",
+    "imagen": "/images/damon.webp"
+  }
+]
