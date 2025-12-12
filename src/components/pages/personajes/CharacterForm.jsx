@@ -42,29 +42,11 @@ const CharacterForm = ({ characterToEdit }) => {
     if (errors[name]) setErrors({ ...errors, [name]: '' });
   };
 
-  const validate = () => {
-    let newErrors = {};
-    if (!form.nombre.trim()) newErrors.nombre = 'El nombre es obligatorio.';
-    if (!form.tipo.trim()) newErrors.tipo = 'El tipo es obligatorio.';
-    if (!form.clasificacion.trim()) newErrors.clasificacion = 'La clasificación es obligatoria.';
-    if (form.imagen && form.imagen.trim()) {
-      const val = form.imagen.trim();
-      const isUrl = /^https?:\/\//i.test(val);
-      const isLocalPath = val.includes('images') || val.includes('public') || val.startsWith('/') || val.startsWith('./') || val.startsWith('../');
-      if (!isUrl && !isLocalPath) newErrors.imagen = 'La imagen debe ser una URL o una ruta local válida (ej: /images/personajes/dracula.jpg o https://ejemplo.com/imagen.jpg).';
-    }
-    
-    if (form.descripcion && String(form.descripcion).length > 5000) newErrors.descripcion = 'La descripción excede el máximo de 5000 caracteres.';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) {
-      toast.error('Por favor corrige los errores del formulario.');
-      return;
-    }
+
 
     setIsSubmitting(true);
     // Preparar datos para el backend
@@ -83,14 +65,24 @@ const CharacterForm = ({ characterToEdit }) => {
       if (characterToEdit) {
         await handleUpdate(characterToEdit._id, dataToSend);
         toast.success(`Personaje ${form.nombre} actualizado con éxito.`);
+        navigate('/characters');
       } else {
-        await handleCreate(dataToSend);
-        toast.success(`¡Personaje ${form.nombre} creado con éxito!`);
-        setForm(initialFormState);
+        const result = await handleCreate(dataToSend);
+        if (result !== false) {
+          toast.success(`¡Personaje ${form.nombre} creado con éxito!`);
+          setForm(initialFormState);
+          navigate('/characters');
+        }
+        // Si result === false, el error ya fue mostrado por handleCreate y no se navega
       }
-      navigate('/characters');
     } catch (error) {
-      toast.error(`Error al ${characterToEdit ? 'actualizar' : 'crear'} el personaje.`);
+      // Mostrar mensaje de error del backend si existe
+      const backendMsg = error?.response?.data?.message;
+      if (backendMsg) {
+        toast.error(backendMsg);
+      } else {
+        toast.error(`Error al ${characterToEdit ? 'actualizar' : 'crear'} el personaje.`);
+      }
       console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
@@ -114,14 +106,14 @@ const CharacterForm = ({ characterToEdit }) => {
         
         {/* Nombre */}
         <div className="mb-4">
-          <label htmlFor="nombre" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Nombre</label>
+          <label htmlFor="nombre" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Nombre *</label>
           <input
             type="text"
             id="nombre"
             name="nombre"
             value={form.nombre}
             onChange={handleChange}
-            required
+            // required eliminado para permitir validación backend
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100"
           />
           {errors.nombre && <p className="text-red-500 text-xs italic mt-1">{errors.nombre}</p>}
@@ -129,13 +121,13 @@ const CharacterForm = ({ characterToEdit }) => {
 
         {/* Tipo (select enum) */}
         <div className="mb-4">
-          <label htmlFor="tipo" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Tipo</label>
+          <label htmlFor="tipo" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Tipo *</label>
           <select
             id="tipo"
             name="tipo"
             value={form.tipo}
             onChange={handleChange}
-            required
+            // required eliminado para permitir validación backend
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100 appearance-none"
           >
             <option value="" disabled>Selecciona un tipo...</option>
@@ -150,14 +142,14 @@ const CharacterForm = ({ characterToEdit }) => {
 
         <div className="mb-4">
           <label htmlFor="obra" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
-            Obra (Película o Serie)
+            Obra (Película o Serie) *
           </label>
           <select
             id="obra"
             name="obra"
             value={form.obra}
             onChange={handleChange}
-            required
+            // required eliminado para permitir validación backend
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500
                        dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100 appearance-none"
           >
@@ -181,11 +173,22 @@ const CharacterForm = ({ characterToEdit }) => {
             name="imagen"
             value={form.imagen}
             onChange={handleChange}
-            required={!characterToEdit}
+            // required eliminado para permitir validación backend
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100"
             placeholder="https://ejemplo.com/imagen.jpg o /images/personajes/archivo.jpg"
           />
           {errors.imagen && <p className="text-red-500 text-xs italic mt-1">{errors.imagen}</p>}
+          {form.imagen && (
+            <div className="mt-4 border border-gray-300 dark:border-gray-600 rounded p-2 text-center">
+              <img
+                src={form.imagen}
+                alt="Preview de Personaje"
+                className="max-h-40 w-auto mx-auto object-cover"
+                onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/100x100/374151/ffffff?text=X"; }}
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Preview</p>
+            </div>
+          )}
         </div>
 
         {/* Poderes */}

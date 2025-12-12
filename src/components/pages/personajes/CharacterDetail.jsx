@@ -40,27 +40,43 @@ const CharacterDetail = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg p-8 transition duration-300">
-      
+      {/* Botón de volver al inicio, visible en todos los tamaños */}
+      <button
+        onClick={() => navigate('/characters')}
+        className="mb-6 text-sm font-semibold text-indigo-600 dark:text-purple-400 hover:text-indigo-800 dark:hover:text-purple-500 transition duration-150"
+      >
+        &#x2190; Volver al inicio
+      </button>
+
       <h1 className="text-3xl font-bold text-center mb-8 text-indigo-700 dark:text-purple-400">
         {character.nombre}
       </h1>
 
       <div className="md:flex md:space-x-8">
-        <img 
-          src={character.imagen} 
-          alt={character.nombre} 
-          className="w-full md:w-1/2 h-64 object-cover rounded-lg shadow-md mb-6 md:mb-0"
-          onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/320x240/374151/ffffff?text=X"}}
-        />
+        <div className="w-full md:w-1/2 flex justify-center items-center mb-6 md:mb-0">
+          <img
+            src={character.imagen}
+            alt={character.nombre}
+            className="w-full max-w-xs md:max-w-md md:max-h-[400px] aspect-3/4 object-contain rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
+            onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/320x240/374151/ffffff?text=X"}}
+          />
+        </div>
         <div className="md:w-1/2">
           <DetailRow label="Tipo" value={character.tipo} />
           <DetailRow label="Clasificación" value={character.clasificacion} />
-          
-          <DetailRow 
-            label="Obra Relacionada" 
-            value={character.obra?.titulo || 'N/A'} 
-          />
-          
+          <div className="flex items-center gap-2 py-2 border-b border-gray-200 dark:border-gray-700">
+            <span className="font-semibold text-gray-900 dark:text-gray-200">Obra Relacionada: </span>
+            <span className="text-gray-700 dark:text-gray-400">{character.obra?.titulo || 'N/A'}</span>
+            {isAdmin && character.obra?._id && (
+              <button
+                onClick={() => navigate(`/obras/${character.obra._id}`)}
+                className="ml-2 px-2 py-1 text-xs bg-indigo-600 hover:bg-indigo-700 text-white rounded transition duration-150"
+                title="Ver detalle de la obra"
+              >
+                Ir a Obra
+              </button>
+            )}
+          </div>
           <div className="mt-4">
             <h3 className="text-xl font-semibold mb-2 dark:text-gray-300">Poderes:</h3>
             <ul className="list-disc list-inside space-y-1 ml-4 dark:text-gray-400">
@@ -69,7 +85,6 @@ const CharacterDetail = () => {
               ))}
             </ul>
           </div>
-
           {isAdmin && (
             <button
               onClick={() => navigate(`/characters/${character._id || character.id}/edit`)}

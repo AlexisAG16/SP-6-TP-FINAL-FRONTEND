@@ -110,9 +110,14 @@ export const CharactersProvider = ({ children }) => {
       }));
       setCharacters(charactersWithArrayPowers);
       setMeta(data?.meta || { totalPages: 1, currentPage: 1, totalItems: raw.length, itemsPerPage: 8 });
-      toast.success("Personaje creado correctamente.");
-    } catch {
-      toast.error("Error al crear personaje.");
+      return true;
+    } catch (error) {
+      if (error?.response?.status === 409 && error?.response?.data?.message?.includes('nombre')) {
+        toast.error(error.response.data.message || "Ya existe un personaje con ese nombre.");
+      } else {
+        toast.error("Error al crear personaje.");
+      }
+      return false;
     } finally {
       setLoading(false);
     }
@@ -170,7 +175,7 @@ export const CharactersProvider = ({ children }) => {
         setFavorites(prev => [...prev, favCharacter]);
         toast.success(`${character.nombre} añadido a favoritos.`, { icon: "💖" });
       }
-    } catch (err) {
+    } catch (error) {
       toast.error('Ocurrió un error al modificar favoritos.');
     }
   }, [isFavorite, setFavorites, favorites]);

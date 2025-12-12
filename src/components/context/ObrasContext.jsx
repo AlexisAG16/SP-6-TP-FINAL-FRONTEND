@@ -59,16 +59,20 @@ export const ObrasProvider = ({ children }) => {
         genero: data.genero || '',
         sinopsis: data.sinopsis || ''
       };
-        setObrasList(prev => [...prev, d]);
-        // 🟢 TOAST: Éxito al crear
-        toast.success(`Obra "${d.titulo}" creada con éxito.`);
-        return true;
+      setObrasList(prev => [...prev, d]);
+      // 🟢 TOAST: Éxito al crear
+      toast.success(`Obra "${d.titulo}" creada con éxito.`);
+      return true;
     } catch (error) {
+      if (error?.response?.status === 409 && error?.response?.data?.message?.includes('título')) {
+        toast.error(error.response.data.message || "Ya existe una obra con ese título.");
+      } else {
         const errorMessage = error.response?.data?.message || "Error al crear la obra.";
         console.error("Error creating obra:", error);
         // 🟢 TOAST: Error al crear
         toast.error(errorMessage);
-        return false;
+      }
+      return false;
     }
   }, []);
 

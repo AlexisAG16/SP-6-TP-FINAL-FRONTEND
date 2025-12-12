@@ -41,6 +41,15 @@ const ObraDetail = () => {
 
     return (
         <div className="py-8 max-w-5xl mx-auto">
+            {/* Botón solo visible en mobile para volver al inicio */}
+            <div className="block sm:hidden mb-4">
+                <button
+                    onClick={() => navigate('/')}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-150 w-full flex items-center justify-center gap-2"
+                >
+                    <span className="text-lg">🏠</span> Volver al Inicio
+                </button>
+            </div>
             <h1 className="text-5xl font-bold mb-6 text-indigo-700 dark:text-purple-400">
                 {obra.titulo}
             </h1>

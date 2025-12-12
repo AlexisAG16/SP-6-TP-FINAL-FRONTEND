@@ -6,7 +6,7 @@ import { ObrasContext } from '../../context/ObrasContext';
 
 const initialFormState = { 
   titulo: '',
-  tipo: 'PELICULA', 
+  tipo: '', // No hay valor por defecto, obliga a seleccionar
   anioPublicacion: '',
   imagenUrl: 'https://loremflickr.com/320/240/book,fantasy', 
   genero: '',
@@ -23,18 +23,18 @@ const validateForm = (form, obraToEdit = null) => {
   if (!form.tipo || !form.tipo.trim()) {
     errors.tipo = 'El tipo de obra (Libro, Serie, etc.) es obligatorio.';
   }
-  const anio = parseInt(form.anioPublicacion);
-  if (isNaN(anio) || anio < 1000 || anio > currentYear) {
-    errors.anioPublicacion = `El año de publicación debe ser un valor numérico entre 1000 y ${currentYear}.`;
+  if (form.anioPublicacion && form.anioPublicacion.trim()) {
+    const anio = parseInt(form.anioPublicacion);
+    if (isNaN(anio) || anio < 1000 || anio > currentYear) {
+      errors.anioPublicacion = `El año de publicación debe ser un valor numérico entre 1000 y ${currentYear}.`;
+    }
   }
 
-  if (!form.genero || !form.genero.trim()) {
-    errors.genero = 'El género es obligatorio.';
+  if (form.genero && form.genero.trim() && form.genero.length < 2) {
+    errors.genero = 'El género debe tener al menos 2 caracteres.';
   }
 
-  if (!form.sinopsis || !form.sinopsis.trim()) {
-    errors.sinopsis = 'La sinopsis es obligatoria.';
-  } else if (String(form.sinopsis).length > 5000) {
+  if (form.sinopsis && String(form.sinopsis).length > 5000) {
     errors.sinopsis = 'La sinopsis excede el máximo de 5000 caracteres.';
   }
 
@@ -196,6 +196,7 @@ const ObraForm = ({ obraToEdit }) => {
             onChange={handleChange}
             className={inputClass + " appearance-none"}
           >
+            <option value="" disabled>Seleccione un tipo de obra</option>
             <option value="PELICULA">Película</option>
             <option value="LIBRO/SAGA">Libro/Saga</option>
             <option value="PELICULA/SAGA">Película/Saga</option>
@@ -208,7 +209,7 @@ const ObraForm = ({ obraToEdit }) => {
         </div>
 
         <div>
-          <label htmlFor="anioPublicacion" className={labelClass}>Año de Publicación *</label>
+          <label htmlFor="anioPublicacion" className={labelClass}>Año de Publicación</label>
           <input
             type="number"
             id="anioPublicacion"
@@ -251,7 +252,7 @@ const ObraForm = ({ obraToEdit }) => {
         </div>
 
         <div>
-          <label htmlFor="genero" className={labelClass}>Género *</label>
+          <label htmlFor="genero" className={labelClass}>Género</label>
           <input
             type="text"
             id="genero"
@@ -264,7 +265,7 @@ const ObraForm = ({ obraToEdit }) => {
         </div>
 
         <div>
-          <label htmlFor="sinopsis" className={labelClass}>Sinopsis *</label>
+          <label htmlFor="sinopsis" className={labelClass}>Sinopsis</label>
           <textarea
             id="sinopsis"
             name="sinopsis"

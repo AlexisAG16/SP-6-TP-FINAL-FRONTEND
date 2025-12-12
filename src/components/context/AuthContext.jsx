@@ -53,8 +53,12 @@ export const AuthProvider = ({ children }) => {
             toast.success(`Cuenta creada para ${data.user.nombre}. ¡Ya estás logueado!`);
             return true;
         } catch (error) {
-            const errorMessage = error.response?.data?.message || "Error al registrar. El email podría estar ya en uso.";
-            toast.error(errorMessage);
+            if (error?.response?.status === 409 && error?.response?.data?.message?.includes('email')) {
+                toast.error(error.response.data.message || "El email ya está registrado.");
+            } else {
+                const errorMessage = error.response?.data?.message || "Error al registrar. El email podría estar ya en uso.";
+                toast.error(errorMessage);
+            }
             return false;
         }
     }, [saveAuthData]);

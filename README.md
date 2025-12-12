@@ -1,4 +1,3 @@
-Pagina Desplegable
  # SP 6 TP FINAL - FRONTEND
 
 ## Descripción General
@@ -38,7 +37,7 @@ SPA desarrollada en React con Vite, TailwindCSS y React Router. Permite gestiona
 - `npm run preview`: Previsualiza la build de producción.
 
 ## Enlace desplegado
-https://personajes-fantasticos.netlify.app/
+https://personajessobrenaturales.netlify.app/
 
 ---
 
@@ -87,7 +86,7 @@ Este backend es una API REST construida con Node.js, Express y MongoDB (Mongoose
 - **models/**: Define los esquemas de usuario, obra y personaje.
 - **repository/**: Acceso a la base de datos, consultas y persistencia.
 - **services/**: Lógica de negocio reutilizable (ej: autenticación, carga de datos externos).
-- **utilities/externalApi.util.mjs**: Función para importar datos desde MockAPI.
+- **utilities/mockapi.loader.js**: Utilidad para importar datos desde MockAPI y poblar la base de datos local en desarrollo.
 
 ## Frontend
 - **src/api/**: Axios para consumir la API backend (AuthApi.js, CharacterApi.js, ObrasApi.js).
