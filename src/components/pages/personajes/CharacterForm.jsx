@@ -61,25 +61,22 @@ const CharacterForm = ({ characterToEdit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      toast.error('Por favor corrige los errores del formulario.');
+      return;
+    }
 
     setIsSubmitting(true);
-    
     // Preparar datos para el backend
     const dataToSend = {
       ...form,
-      // Convertir el string de poderes de vuelta a un array, eliminando espacios vacíos
       poderes: form.poderes.split(',').map(p => p.trim()).filter(p => p.length > 0),
     };
-
-    // Sanitizar campos de texto antes de enviarlos al servidor
     dataToSend.nombre = DOMPurify.sanitize(String(dataToSend.nombre || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
     dataToSend.tipo = DOMPurify.sanitize(String(dataToSend.tipo || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
     dataToSend.descripcion = DOMPurify.sanitize(String(dataToSend.descripcion || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
     dataToSend.poderes = dataToSend.poderes.map(p => DOMPurify.sanitize(String(p), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }));
-
     try {
-      // Si estamos editando y no se proporcionó imagen nueva, mantener la anterior
       if (characterToEdit && (!form.imagen || !form.imagen.trim())) {
         dataToSend.imagen = characterToEdit.imagen || '';
       }
@@ -93,8 +90,8 @@ const CharacterForm = ({ characterToEdit }) => {
       }
       navigate('/characters');
     } catch (error) {
-        toast.error(`Error al ${characterToEdit ? 'actualizar' : 'crear'} el personaje.`);
-        console.error("Form submission error:", error);
+      toast.error(`Error al ${characterToEdit ? 'actualizar' : 'crear'} el personaje.`);
+      console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
     }

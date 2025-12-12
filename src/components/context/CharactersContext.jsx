@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useMemo, useCallback, useContext } from 'react';
 import { getCharacters, createCharacter, updateCharacter, deleteCharacter } from '../../api/CharacterApi';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useTheme } from '../../hooks/useTheme';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { AuthContext } from './AuthContext';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const CharactersContext = createContext();
@@ -13,14 +14,18 @@ export const CharactersProvider = ({ children }) => {
   const [meta, setMeta] = useState({ totalPages: 1, currentPage: 1, totalItems: 0, itemsPerPage: 8 });
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  
-  const { theme, toggleTheme } = useTheme(); 
+
+  const { theme, toggleTheme } = useTheme();
+  const { user } = useContext(AuthContext);
 
   const [filterType, setFilterType] = useState('');
-  
-  const [searchTermName, setSearchTermName] = useState(''); 
+  const [searchTermName, setSearchTermName] = useState('');
 
-  const [favorites, setFavorites] = useLocalStorage('app-favorites', []);
+  // Favoritos por usuario (clave única por id/email)
+  const userKey = user?.id || user?._id || user?.email || 'anon';
+  const [favorites, setFavorites] = useLocalStorage(`app-favorites-${userKey}`, []);
+
+
 
   // --- LÓGICA CRUD ---
 
@@ -144,24 +149,31 @@ export const CharactersProvider = ({ children }) => {
   }, [favorites]);
 
   const toggleFavorite = useCallback((character) => {
-    const isFav = isFavorite(character._id || character.id);
-    const charId = character._id || character.id;
-    
-    const favCharacter = {
-      id: charId,
-      nombre: character.nombre,
-      imagen: character.imagen,
-      tipo: character.tipo
-    };
-
-    if (isFav) {
+    try {
+      const isFav = isFavorite(character._id || character.id);
+      const charId = character._id || character.id;
+      const favCharacter = {
+        id: charId,
+        nombre: character.nombre,
+        imagen: character.imagen,
+        tipo: character.tipo
+      };
+      if (isFav) {
         setFavorites(prev => prev.filter(char => char.id !== charId));
         toast.info(`${character.nombre} eliminado de favoritos.`, { icon: "💔" });
-    } else {
+      } else {
+        // Si ya existe, advertir (doble chequeo defensivo)
+        if (favorites.some(char => char.id === charId)) {
+          toast.warn(`${character.nombre} ya está en favoritos.`);
+          return;
+        }
         setFavorites(prev => [...prev, favCharacter]);
         toast.success(`${character.nombre} añadido a favoritos.`, { icon: "💖" });
+      }
+    } catch (err) {
+      toast.error('Ocurrió un error al modificar favoritos.');
     }
-  }, [isFavorite, setFavorites]);
+  }, [isFavorite, setFavorites, favorites]);
 
   const removeFavorite = useCallback((id) => {
     const removedChar = favorites.find(char => char.id === id);

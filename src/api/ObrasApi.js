@@ -1,3 +1,11 @@
+// Cargar obras desde MockAPI (solo admin)
+export const cargarObrasMockApi = async (token) => {
+    return axios.post(
+        `${BASE_URL}/cargar-mockapi`,
+        {},
+        token ? { headers: { Authorization: `Bearer ${token}` } } : {}
+    );
+};
 import axios from 'axios';
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/obras`; 

@@ -60,6 +60,15 @@ export const AuthProvider = ({ children }) => {
     }, [saveAuthData]);
     
     const logout = useCallback(() => {
+        // Limpiar favoritos del usuario actual
+        try {
+            const storedUser = sessionStorage.getItem('user');
+            if (storedUser) {
+                const parsed = JSON.parse(storedUser);
+                const userKey = parsed?.id || parsed?._id || parsed?.email || 'anon';
+                window.localStorage.removeItem(`app-favorites-${userKey}`);
+            }
+        } catch {}
         setUser(null);
         setToken(null);
         sessionStorage.removeItem('user');

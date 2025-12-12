@@ -33,19 +33,26 @@ const Login = () => {
         e.preventDefault();
         setIsSubmitting(true);
         if (!validate()) {
+            toast.error('Por favor corrige los errores del formulario.');
             setIsSubmitting(false);
             return;
         }
 
-        const safeCredentials = { ...credentials, email: DOMPurify.sanitize(String(credentials.email || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }) };
-        const success = await login(safeCredentials);
-        
-        setIsSubmitting(false);
-
-        if (success) {
-            setTimeout(() => {
-                navigate('/characters', { replace: true });
-            }, 150);
+        try {
+            const safeCredentials = { ...credentials, email: DOMPurify.sanitize(String(credentials.email || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }) };
+            const success = await login(safeCredentials);
+            if (success) {
+                toast.success('Inicio de sesión exitoso.');
+                setTimeout(() => {
+                    navigate('/characters', { replace: true });
+                }, 150);
+            } else {
+                toast.error('No se pudo iniciar sesión.');
+            }
+        } catch (err) {
+            toast.error('Ocurrió un error inesperado.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

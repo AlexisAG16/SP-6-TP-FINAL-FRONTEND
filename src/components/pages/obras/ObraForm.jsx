@@ -136,9 +136,11 @@ const ObraForm = ({ obraToEdit }) => {
       if (obraToEdit) {
         if (!dataToSend.imagen) dataToSend.imagen = obraToEdit.imagen || undefined;
         success = await handleUpdateObra(obraId, dataToSend);
+        if (success) toast.success('Obra actualizada con éxito.');
       } else {
         // Crear
         success = await handleCreateObra(dataToSend);
+        if (success) toast.success('Obra creada con éxito.');
       }
 
       if (success) {

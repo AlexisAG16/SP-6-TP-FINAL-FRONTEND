@@ -36,23 +36,30 @@ const Register = () => {
         e.preventDefault();
         setIsSubmitting(true);
         if (!validate()) {
+            toast.error('Por favor corrige los errores del formulario.');
             setIsSubmitting(false);
             return;
         }
 
-        const payload = { ...userData };
-        payload.nombre = DOMPurify.sanitize(String(payload.nombre || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
-        if (payload.adminCode) payload.adminCode = DOMPurify.sanitize(String(payload.adminCode).trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
-        if (!isAdminMode) delete payload.adminCode;
+        try {
+            const payload = { ...userData };
+            payload.nombre = DOMPurify.sanitize(String(payload.nombre || '').trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+            if (payload.adminCode) payload.adminCode = DOMPurify.sanitize(String(payload.adminCode).trim(), { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+            if (!isAdminMode) delete payload.adminCode;
 
-        const success = await register(payload);
-        
-        setIsSubmitting(false);
-
-        if (success) {
-            setTimeout(() => {
-                navigate('/characters', { replace: true });
-            }, 150);
+            const success = await register(payload);
+            if (success) {
+                toast.success('Registro exitoso.');
+                setTimeout(() => {
+                    navigate('/characters', { replace: true });
+                }, 150);
+            } else {
+                toast.error('No se pudo registrar el usuario.');
+            }
+        } catch (err) {
+            toast.error('Ocurrió un error inesperado.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

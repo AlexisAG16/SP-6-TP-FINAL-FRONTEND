@@ -9,15 +9,30 @@ import { ObrasProvider } from './components/context/ObrasContext.jsx';
 import './index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useContext } from 'react';
+import { AuthContext } from './components/context/AuthContext.jsx';
+
+// eslint-disable-next-line react-refresh/only-export-components
+function ProvidersWrapper({ children }) {
+  const { user } = useContext(AuthContext);
+  // Usar una key única para forzar el remount de CharactersProvider al cambiar de usuario
+  const userKey = user?.id || user?._id || user?.email || 'anon';
+  return (
+    <ObrasProvider>
+      <CharactersProvider key={userKey}>
+        {children}
+      </CharactersProvider>
+    </ObrasProvider>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-          <ObrasProvider> 
-            <CharactersProvider>
-              <App />
-            </CharactersProvider>
-          </ObrasProvider>
+        <ProvidersWrapper>
+          <App />
+        </ProvidersWrapper>
       </AuthProvider>
       <ToastContainer position="bottom-right" autoClose={3000} theme="colored" />
     </BrowserRouter>
