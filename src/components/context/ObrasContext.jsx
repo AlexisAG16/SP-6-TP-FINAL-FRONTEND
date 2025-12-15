@@ -10,12 +10,11 @@ export const ObrasProvider = ({ children }) => {
   const [obrasList, setObrasList] = useState([]); 
   const [loadingObras, setLoadingObras] = useState(true);
 
-  // Obtener obras iniciales
   useEffect(() => {
     const fetchObras = async () => {
       try {
         const { data } = await getObras();
-        // Normalize backend fields to the frontend-friendly shape
+
         const normalized = (data || []).map(o => ({
           ...o,
           tipo: o.tipo || o.tipo_obra || '',
@@ -27,7 +26,7 @@ export const ObrasProvider = ({ children }) => {
         setObrasList(normalized);
       } catch (error) {
         console.error("Error fetching obras:", error);
-        // 🟢 TOAST: Error al cargar
+
         toast.error("Error al cargar la lista de obras. Revisa la conexión con el backend.");
       } finally {
         setLoadingObras(false);
@@ -36,10 +35,9 @@ export const ObrasProvider = ({ children }) => {
     fetchObras();
   }, []);
 
-  // Crear una nueva obra
-  const handleCreateObra = useCallback(async (newObraData) => { // ⬅️ Función de creación
+  const handleCreateObra = useCallback(async (newObraData) => { 
     try {
-      // Map frontend form fields to backend names
+
       const payload = {
         ...newObraData,
         tipo_obra: newObraData.tipo || newObraData.tipo_obra,
@@ -50,7 +48,7 @@ export const ObrasProvider = ({ children }) => {
       };
 
       const { data } = await createObra(payload);
-      // Normalize returned data too
+
       const d = {
         ...data,
         tipo: data.tipo || data.tipo_obra || '',
@@ -60,24 +58,24 @@ export const ObrasProvider = ({ children }) => {
         sinopsis: data.sinopsis || ''
       };
       setObrasList(prev => [...prev, d]);
-      // 🟢 TOAST: Éxito al crear
+
       toast.success(`Obra "${d.titulo}" creada con éxito.`);
       return true;
+
     } catch (error) {
       if (error?.response?.status === 409 && error?.response?.data?.message?.includes('título')) {
         toast.error(error.response.data.message || "Ya existe una obra con ese título.");
       } else {
         const errorMessage = error.response?.data?.message || "Error al crear la obra.";
         console.error("Error creating obra:", error);
-        // 🟢 TOAST: Error al crear
+
         toast.error(errorMessage);
       }
       return false;
     }
   }, []);
 
-  // Actualizar una obra existente
-  const handleUpdateObra = useCallback(async (id, updatedData) => { // ⬅️ Función de actualización
+  const handleUpdateObra = useCallback(async (id, updatedData) => {
     try {
         const payload = {
           ...updatedData,
@@ -89,7 +87,7 @@ export const ObrasProvider = ({ children }) => {
         };
 
         const { data } = await updateObra(id, payload);
-        // Normalize returned updated object
+        
         const updated = {
           ...data,
           tipo: data.tipo || data.tipo_obra || '',
@@ -102,20 +100,19 @@ export const ObrasProvider = ({ children }) => {
         setObrasList(prev => prev.map(obra => 
             (obra._id || obra.id) === id ? updated : obra
         ));
-        // 🟢 TOAST: Éxito al actualizar
+
         toast.success(`Obra "${updated.titulo}" actualizada con éxito.`);
         return true;
     } catch (error) {
         const errorMessage = error.response?.data?.message || "Error al actualizar la obra.";
         console.error("Error updating obra:", error);
-        // 🟢 TOAST: Error al actualizar
         toast.error(errorMessage);
         return false;
     }
   }, []);
 
   // Eliminar una obra
-  const handleDeleteObra = useCallback(async (id, titulo) => { // ⬅️ Función de eliminación
+  const handleDeleteObra = useCallback(async (id, titulo) => {
     Swal.fire({
         title: `¿Estás seguro de eliminar la obra "${titulo}"?`,
         text: "¡Esto podría afectar a personajes asociados!",
@@ -130,11 +127,9 @@ export const ObrasProvider = ({ children }) => {
             try {
                 await deleteObra(id);
                 setObrasList(prev => prev.filter(obra => (obra._id || obra.id) !== id));
-                // 🟢 TOAST: Éxito al eliminar
                 toast.success(`Obra "${titulo}" eliminada correctamente.`);
             } catch (error) {
                 console.error("Error deleting obra:", error);
-                // 🟢 TOAST: Error al eliminar
                 toast.error(`Error al eliminar "${titulo}".`);
             }
         }

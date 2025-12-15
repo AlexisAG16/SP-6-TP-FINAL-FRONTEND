@@ -20,7 +20,7 @@ const Navbar = () => {
         <Link to="/" className="text-2xl font-extrabold text-indigo-600 dark:text-purple-400">
           Personajes Sobrenaturales
         </Link>
-        {/* Botón hamburguesa para móviles */}
+
         <button
           className={`md:hidden flex items-center justify-center p-2 rounded border-2 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 ${menuOpen ? 'bg-indigo-100 dark:bg-purple-900 border-indigo-500 dark:border-purple-400' : 'bg-white dark:bg-gray-900 border-indigo-300 dark:border-purple-400'}`}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -31,7 +31,6 @@ const Navbar = () => {
             viewBox="0 0 24 24"
             fill="none"
             stroke={menuOpen ? 'currentColor' : '#a78bfa'}
-            /* #a78bfa es purple-400 de Tailwind */
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -50,7 +49,7 @@ const Navbar = () => {
             )}
           </svg>
         </button>
-        {/* Menú de navegación */}
+        
         <div className={`flex-col md:flex-row md:flex space-y-2 md:space-y-0 md:space-x-4 items-center absolute md:static top-16 left-0 w-full md:w-auto bg-white dark:bg-gray-900 md:bg-transparent md:dark:bg-transparent shadow-xl md:shadow-none border-t-2 border-indigo-400 dark:border-purple-700 md:border-none rounded-b-xl transition-all duration-300 z-40 ${menuOpen ? 'flex' : 'hidden'} md:flex`}>
           <div className="flex flex-col w-full md:flex-row md:w-auto text-center">
             <NavLink 

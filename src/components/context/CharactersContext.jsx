@@ -21,13 +21,10 @@ export const CharactersProvider = ({ children }) => {
   const [filterType, setFilterType] = useState('');
   const [searchTermName, setSearchTermName] = useState('');
 
-  // Favoritos por usuario (clave única por id/email)
   const userKey = user?.id || user?._id || user?.email || 'anon';
   const [favorites, setFavorites] = useLocalStorage(`app-favorites-${userKey}`, []);
 
 
-
-  // --- LÓGICA CRUD ---
 
   useEffect(() => {
     setCurrentPage(1);
@@ -38,7 +35,7 @@ export const CharactersProvider = ({ children }) => {
       setLoading(true);
       try {
         const { data } = await getCharacters(currentPage, meta.itemsPerPage, filterType, searchTermName);
-        // La API devuelve { personajes: [], meta: {} }
+
         const raw = Array.isArray(data) ? data : (data?.personajes || []);
         const charactersWithArrayPowers = (raw || []).map(char => ({
           ...char,
@@ -123,7 +120,7 @@ export const CharactersProvider = ({ children }) => {
     }
   }, [currentPage, meta.itemsPerPage]);
 
-  // Actualizar personaje
+
   const handleUpdate = useCallback(async (id, characterData) => {
     try {
       await updateCharacter(id, characterData);
@@ -147,7 +144,6 @@ export const CharactersProvider = ({ children }) => {
   }, [currentPage, meta.itemsPerPage]);
 
 
-  // --- LÓGICA DE FAVORITOS ---
   
   const isFavorite = useCallback((id) => {
     return favorites.some(char => char.id === id);
@@ -167,7 +163,6 @@ export const CharactersProvider = ({ children }) => {
         setFavorites(prev => prev.filter(char => char.id !== charId));
         toast.info(`${character.nombre} eliminado de favoritos.`, { icon: "💔" });
       } else {
-        // Si ya existe, advertir (doble chequeo defensivo)
         if (favorites.some(char => char.id === charId)) {
           toast.warn(`${character.nombre} ya está en favoritos.`);
           return;
@@ -176,7 +171,7 @@ export const CharactersProvider = ({ children }) => {
         toast.success(`${character.nombre} añadido a favoritos.`, { icon: "💖" });
       }
     } catch (error) {
-      toast.error('Ocurrió un error al modificar favoritos.');
+      toast.error(error,'Ocurrió un error al modificar favoritos.');
     }
   }, [isFavorite, setFavorites, favorites]);
 
@@ -199,7 +194,6 @@ export const CharactersProvider = ({ children }) => {
   
     const filteredCharacters = useMemo(() => characters, [characters]);
 
-  // Valor del Contexto
   const contextValue = useMemo(() => ({
     characters: filteredCharacters,
     loading,

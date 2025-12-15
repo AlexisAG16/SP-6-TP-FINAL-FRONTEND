@@ -35,7 +35,6 @@ const CharacterForm = ({ characterToEdit }) => {
     }
   }, [characterToEdit]);
 
-  // Manejador genérico de cambios
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -49,7 +48,6 @@ const CharacterForm = ({ characterToEdit }) => {
 
 
     setIsSubmitting(true);
-    // Preparar datos para el backend
     const dataToSend = {
       ...form,
       poderes: form.poderes.split(',').map(p => p.trim()).filter(p => p.length > 0),
@@ -73,10 +71,8 @@ const CharacterForm = ({ characterToEdit }) => {
           setForm(initialFormState);
           navigate('/characters');
         }
-        // Si result === false, el error ya fue mostrado por handleCreate y no se navega
       }
     } catch (error) {
-      // Mostrar mensaje de error del backend si existe
       const backendMsg = error?.response?.data?.message;
       if (backendMsg) {
         toast.error(backendMsg);
@@ -89,7 +85,6 @@ const CharacterForm = ({ characterToEdit }) => {
     }
   };
   
-  // Mostrar un mensaje de carga si la lista de obras aún se está cargando
   if (loadingObras) return <p className="text-center dark:text-gray-300">Cargando opciones de obras...</p>;
 
   return (
@@ -104,7 +99,6 @@ const CharacterForm = ({ characterToEdit }) => {
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Nombre */}
         <div className="mb-4">
           <label htmlFor="nombre" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Nombre *</label>
           <input
@@ -113,13 +107,11 @@ const CharacterForm = ({ characterToEdit }) => {
             name="nombre"
             value={form.nombre}
             onChange={handleChange}
-            // required eliminado para permitir validación backend
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100"
           />
           {errors.nombre && <p className="text-red-500 text-xs italic mt-1">{errors.nombre}</p>}
         </div>
 
-        {/* Tipo (select enum) */}
         <div className="mb-4">
           <label htmlFor="tipo" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Tipo *</label>
           <select
@@ -127,7 +119,6 @@ const CharacterForm = ({ characterToEdit }) => {
             name="tipo"
             value={form.tipo}
             onChange={handleChange}
-            // required eliminado para permitir validación backend
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100 appearance-none"
           >
             <option value="" disabled>Selecciona un tipo...</option>
@@ -149,13 +140,11 @@ const CharacterForm = ({ characterToEdit }) => {
             name="obra"
             value={form.obra}
             onChange={handleChange}
-            // required eliminado para permitir validación backend
             className="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500
                        dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100 appearance-none"
           >
             <option value="" disabled>Selecciona una Obra...</option>
             {obrasList.map((media) => (
-              // El valor enviado al backend debe ser el ID de la obra
               <option key={media._id} value={media._id}>
                 {media.titulo} ({media.anioPublicacion || media.anio_publicacion || 'N/A'})
               </option>
@@ -164,7 +153,6 @@ const CharacterForm = ({ characterToEdit }) => {
           {errors.obra && <p className="text-red-500 text-xs italic mt-1">{errors.obra}</p>}
         </div>
 
-        {/* URL de Imagen */}
         <div className="mb-4">
           <label htmlFor="imagen" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">URL de Imagen</label>
           <input
@@ -173,7 +161,6 @@ const CharacterForm = ({ characterToEdit }) => {
             name="imagen"
             value={form.imagen}
             onChange={handleChange}
-            // required eliminado para permitir validación backend
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-purple-600 dark:text-gray-100"
             placeholder="https://ejemplo.com/imagen.jpg o /images/personajes/archivo.jpg"
           />
@@ -191,7 +178,6 @@ const CharacterForm = ({ characterToEdit }) => {
           )}
         </div>
 
-        {/* Poderes */}
         <div className="mb-4">
           <label htmlFor="poderes" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
             Poderes (separados por coma)
@@ -207,7 +193,6 @@ const CharacterForm = ({ characterToEdit }) => {
           />
         </div>
 
-        {/* Descripción (textarea grande) */}
         <div className="mb-4">
           <label htmlFor="descripcion" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Descripción</label>
           <textarea
@@ -222,7 +207,6 @@ const CharacterForm = ({ characterToEdit }) => {
           <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex justify-end">{String(form.descripcion || '').length}/5000</div>
         </div>
 
-        {/* Clasificación */}
         <div className="mb-4">
           <label htmlFor="clasificacion" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Clasificación</label>
           <select

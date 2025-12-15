@@ -56,8 +56,8 @@ const Register = () => {
             } else {
                 toast.error('No se pudo registrar el usuario.');
             }
-        } catch (err) {
-            toast.error('Ocurrió un error inesperado.');
+        } catch (error) {
+            toast.error(error,'Ocurrió un error inesperado.');
         } finally {
             setIsSubmitting(false);
         }
@@ -137,7 +137,6 @@ const Register = () => {
                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                     </div>
 
-                    {/* Opcional: Crear como admin usando un código secreto */}
                     <div className="flex items-center space-x-3">
                         <input
                             id="isAdminMode"

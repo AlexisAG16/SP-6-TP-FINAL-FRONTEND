@@ -64,7 +64,6 @@ export const AuthProvider = ({ children }) => {
     }, [saveAuthData]);
     
     const logout = useCallback(() => {
-        // Limpiar favoritos del usuario actual
         try {
             const storedUser = sessionStorage.getItem('user');
             if (storedUser) {
@@ -72,7 +71,9 @@ export const AuthProvider = ({ children }) => {
                 const userKey = parsed?.id || parsed?._id || parsed?.email || 'anon';
                 window.localStorage.removeItem(`app-favorites-${userKey}`);
             }
-        } catch {}
+        } catch(error) {
+            toast.error(error,"No se pudo cerrar sesión");
+        }
         setUser(null);
         setToken(null);
         sessionStorage.removeItem('user');

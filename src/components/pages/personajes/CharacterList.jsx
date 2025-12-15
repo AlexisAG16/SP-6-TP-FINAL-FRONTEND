@@ -57,7 +57,6 @@ const CharacterList = () => {
   return (
     <div className="max-w-7xl mx-auto py-8">
       
-      {/* 1. Encabezado y Botón de Creación */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 w-full">
         <h1 className="text-2xl sm:text-3xl font-bold text-indigo-700 dark:text-purple-300 text-center sm:text-left w-full sm:w-auto">Personajes Fantásticos</h1>
         {isAdmin && (
@@ -70,10 +69,8 @@ const CharacterList = () => {
         )}
       </div>
       
-      {/* 2. Contenedor de Búsqueda y Filtros */}
       <div className="flex flex-col md:flex-row gap-6 mb-8 w-full">
         
-        {/* Búsqueda por Nombre (Home.jsx) */}
         <div className={`md:w-1/2 ${filterContainerClass}`}>
             <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200">Búsqueda por Nombre</h3>
             <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 w-full">
@@ -103,7 +100,6 @@ const CharacterList = () => {
             </form>
         </div>
         
-        {/* Filtro por Tipo*/}
         <div className={`md:w-1/2 ${filterContainerClass}`}>
           <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-gray-200">Filtro por Tipo</h3>
           <label htmlFor="typeFilter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -138,8 +134,6 @@ const CharacterList = () => {
         </div>
       </div>
       
-      {/* 3. Lista de Personajes (Manejo de Resultados) */}
-      
       {((characters.length === 0 || !Array.isArray(characters)) && !loading) ? (
         <div className="text-center p-10 bg-gray-50 dark:bg-gray-900 rounded-lg">
           <p className="text-2xl font-semibold text-red-500 dark:text-red-400">
@@ -156,7 +150,6 @@ const CharacterList = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {(Array.isArray(characters) ? characters : [])
               .filter(character => {
-                // Filtrado por tipo (contiene, insensible a mayúsculas)
                 if (!filterType.trim()) return true;
                 return (character.tipo || '').toLowerCase().includes(filterType.trim().toLowerCase());
               })
@@ -164,7 +157,7 @@ const CharacterList = () => {
                 <CharacterCard key={character._id || character.id} character={character} />
               ))}
           </div>
-          {/* Controles de paginación reales */}
+          
           {meta.totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-8">
               <button

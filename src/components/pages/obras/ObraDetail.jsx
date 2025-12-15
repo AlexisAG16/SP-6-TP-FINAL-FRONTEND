@@ -41,7 +41,6 @@ const ObraDetail = () => {
 
     return (
         <div className="py-8 max-w-5xl mx-auto">
-            {/* Botón solo visible en mobile para volver al inicio */}
             <div className="block sm:hidden mb-4">
                 <button
                     onClick={() => navigate('/')}
@@ -55,7 +54,6 @@ const ObraDetail = () => {
             </h1>
 
             <div className="flex flex-col md:flex-row gap-8">
-                {/* Columna de Imagen */}
                 <div className="md:w-1/3">
                     <img 
                         src={imageUrl} 

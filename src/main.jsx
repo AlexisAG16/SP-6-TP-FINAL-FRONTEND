@@ -15,7 +15,7 @@ import { AuthContext } from './components/context/AuthContext.jsx';
 // eslint-disable-next-line react-refresh/only-export-components
 function ProvidersWrapper({ children }) {
   const { user } = useContext(AuthContext);
-  // Usar una key única para forzar el remount de CharactersProvider al cambiar de usuario
+  
   const userKey = user?.id || user?._id || user?.email || 'anon';
   return (
     <ObrasProvider>

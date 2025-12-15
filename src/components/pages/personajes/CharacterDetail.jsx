@@ -23,9 +23,8 @@ const CharacterDetail = () => {
       try {
         const { data } = await getCharacterById(id); 
         setCharacter(data);
-      // eslint-disable-next-line no-unused-vars
       } catch (error) {
-        toast.error("Error al cargar detalles del personaje.");
+        toast.error(error,"Error al cargar detalles del personaje.");
       } finally {
         setLoading(false);
       }
@@ -36,11 +35,11 @@ const CharacterDetail = () => {
   if (loading) return <LoadingSpinner message="Cargando detalles del personaje..." />;
   if (!character) return null; 
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { isAdmin } = useContext(AuthContext);
 
   return (
     <div className="max-w-4xl mx-auto mt-8 bg-white dark:bg-gray-900 shadow-xl rounded-lg p-8 transition duration-300">
-      {/* Botón de volver al inicio, visible en todos los tamaños */}
       <button
         onClick={() => navigate('/characters')}
         className="mb-6 text-sm font-semibold text-indigo-600 dark:text-purple-400 hover:text-indigo-800 dark:hover:text-purple-500 transition duration-150"

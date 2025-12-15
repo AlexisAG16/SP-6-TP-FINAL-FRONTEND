@@ -1,4 +1,3 @@
-// Cargar obras desde MockAPI (solo admin)
 export const cargarObrasMockApi = async (token) => {
     return axios.post(
         `${BASE_URL}/cargar-mockapi`,

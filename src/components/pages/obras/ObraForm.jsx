@@ -6,7 +6,7 @@ import { ObrasContext } from '../../context/ObrasContext';
 
 const initialFormState = { 
   titulo: '',
-  tipo: '', // No hay valor por defecto, obliga a seleccionar
+  tipo: '',
   anioPublicacion: '',
   imagenUrl: 'https://loremflickr.com/320/240/book,fantasy', 
   genero: '',

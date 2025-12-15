@@ -13,7 +13,6 @@ const ObraList = () => {
 
   if (loadingObras) return <LoadingSpinner message="Cargando obras..." />;
 
-  // Botón para cargar obras desde MockAPI
   const handleCargarMockApi = async () => {
     try {
       const token = user?.token;
@@ -22,7 +21,6 @@ const ObraList = () => {
         toast.info(data.message);
       } else {
         toast.success(data.message || 'Obras cargadas desde MockAPI.');
-        // Solo recargar si realmente se insertó algo nuevo
         setTimeout(() => window.location.reload(), 1200);
       }
     } catch (error) {

@@ -49,8 +49,8 @@ const Login = () => {
             } else {
                 toast.error('No se pudo iniciar sesión.');
             }
-        } catch (err) {
-            toast.error('Ocurrió un error inesperado.');
+        } catch (error) {
+            toast.error(error,'Ocurrió un error inesperado.');
         } finally {
             setIsSubmitting(false);
         }
